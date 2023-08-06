@@ -9,6 +9,7 @@ export default function Layout({ children }) {
   const [signer, setSigner] = useState(null);
   const [data, setData] = useState([]);
   const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
+  const [contract,setContract] = useState(null);
   // const [contract,setContract] = useState(null);
   async function connect() {
     if (typeof window.ethereum !== "undefined") {
@@ -24,16 +25,25 @@ export default function Layout({ children }) {
       setIsConnected(false);
     }
   }
-  useEffect(async () => {
+  async function execute(){
     if (typeof window.ethereum !== "undefined") {
       const contract = new ethers.Contract(CONTRACT_ADDRESS, noteyABI, signer);
+
+      
       try {
+        setContract(contract);
         const data = await contract.getNotes(); // should return a list of note objects created by smart contract
         setData(data);
       } catch (error) {
         console.log(error);
       }
+    } else {
+      alert("install metamask");
+    }
 
+  }
+  useEffect(() => {
+    if(contract){
       async function addNote(noteId, content, title) {
         await contract.addNotes(noteId, content, title);
       }
@@ -43,20 +53,20 @@ export default function Layout({ children }) {
       async function getNote(noteId) {
         await contract.getNoteId(noteId);
       }
-    } else {
-      alert("install metamask");
     }
-  });
+  })
+
 
   return (
     <>
       <title>Notey</title>
       <div className="min-h-screen w-full ">
-        <Header connect={connect} isConnected={isConnected} />
+        <Header connect={connect} isConnected={isConnected} execute={execute} />
         <div className="flex items-stretch w-full h-screen">
           <div className="w-80 ">
             <Sidebar data={data} />
           </div>
+
           <main className="w-full p-6">{children}</main>
         </div>
       </div>
