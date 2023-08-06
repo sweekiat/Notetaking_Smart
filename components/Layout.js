@@ -1,15 +1,15 @@
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { ethers } from "ethers";
-import { useEffect, useState } from "react";
+import { useEffect, useState, cloneElement } from "react";
 import { noteyABI } from "../notey";
 
 export default function Layout({ children }) {
   const [isConnected, setIsConnected] = useState(false);
   const [signer, setSigner] = useState(null);
   const [data, setData] = useState([]);
-  const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
-  const [contract,setContract] = useState(null);
+  const CONTRACT_ADDRESS = "0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99";
+  const [contract, setContract] = useState(null);
   // const [contract,setContract] = useState(null);
   async function connect() {
     if (typeof window.ethereum !== "undefined") {
@@ -25,11 +25,10 @@ export default function Layout({ children }) {
       setIsConnected(false);
     }
   }
-  async function execute(){
+  async function execute() {
     if (typeof window.ethereum !== "undefined") {
       const contract = new ethers.Contract(CONTRACT_ADDRESS, noteyABI, signer);
 
-      
       try {
         setContract(contract);
         const data = await contract.getNotes(); // should return a list of note objects created by smart contract
@@ -40,23 +39,23 @@ export default function Layout({ children }) {
     } else {
       alert("install metamask");
     }
-
   }
-  useEffect(() => {
-    if(contract){
-      async function addNote(noteId, content, title) {
-        await contract.addNotes(noteId, content, title);
-      }
-      async function deleteNote(noteId) {
-        await contract.deleteNote(noteId);
-      }
-      async function getNote(noteId) {
-        await contract.getNoteId(noteId);
-      }
+
+  async function addNote(noteId, content, title) {
+    if (contract) {
+      await contract.addNote(noteId, content, title);
     }
-  })
-
-
+  }
+  async function deleteNote(noteId) {
+    if (contract) {
+      await contract.deleteNote(noteId);
+    }
+  }
+  async function getNote(noteId) {
+    if (contract) {
+      await contract.getNoteId(noteId);
+    }
+  }
   return (
     <>
       <title>Notey</title>
@@ -67,7 +66,10 @@ export default function Layout({ children }) {
             <Sidebar data={data} />
           </div>
 
-          <main className="w-full p-6">{children}</main>
+          {/* <main className="w-full p-6">{children}</main> */}
+          <main className="w-full p-6">
+            {cloneElement(children, { addNote, deleteNote, getNote })}
+          </main>
         </div>
       </div>
     </>
