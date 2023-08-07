@@ -10,7 +10,7 @@ export default function Header({ connect, isConnected, execute }) {
 
   return (
     <header className="flex flex-row items-center justify-between bg-slate-800 p-4 text-white">
-      <h1 className="text-3xl font-bold">hi</h1>
+      <h1 className="text-xs font-bold">{isConnected?window.ethereum.selectedAddress:"hi"}</h1>
       <Link href="/">MyNotes</Link>
       {isConnected ? (
         <Button

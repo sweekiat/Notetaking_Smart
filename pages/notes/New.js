@@ -14,7 +14,10 @@ export default function New({ addNote }) {
             <input
               name="title"
               className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
-              // disabled={disabled}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+              value={title}
             />
           </label>
         </div>
@@ -22,9 +25,13 @@ export default function New({ addNote }) {
           <label className="flex w-full flex-col gap-1">
             <span>ID: </span>
             <input
-              name="title"
+              name="id"
               className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
               type={"number"}
+              onChange={(e) => {
+                setId(e.target.value);
+              }}
+              value={id}
             />
           </label>
         </div>
@@ -35,7 +42,10 @@ export default function New({ addNote }) {
               name="body"
               rows={8}
               className="w-full flex-1 rounded-md border-2 border-blue-500 py-2 px-3 text-lg leading-6"
-              // disabled={disabled}
+              onChange={(e) => {
+                setBody(e.target.value);
+              }}
+              value={body}
             />
           </label>
         </div>
@@ -46,6 +56,9 @@ export default function New({ addNote }) {
             onClick={() => {
               addNote(id, body, title);
               event.preventDefault();
+              setBody("");
+              setTitle("");
+              setId("");
             }}
           >
             Save

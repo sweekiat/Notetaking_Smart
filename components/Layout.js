@@ -8,7 +8,7 @@ export default function Layout({ children }) {
   const [isConnected, setIsConnected] = useState(false);
   const [signer, setSigner] = useState(null);
   const [data, setData] = useState([]);
-  const CONTRACT_ADDRESS = "0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99";
+  const CONTRACT_ADDRESS = "0x7EF2e0048f5bAeDe046f6BF797943daF4ED8CB47";
   const [contract, setContract] = useState(null);
   // const [contract,setContract] = useState(null);
   async function connect() {
