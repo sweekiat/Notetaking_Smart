@@ -2,14 +2,12 @@ import Header from "./Header";
 
 import { ethers } from "ethers";
 import { useEffect, useState, cloneElement } from "react";
-
+import { Outlet } from "react-router-dom";
 
 export default function Layout({ children }) {
   const [isConnected, setIsConnected] = useState(false);
   const [signer, setSigner] = useState(null);
   console.log(isConnected);
-
-
 
   async function connect() {
     if (typeof window.ethereum !== "undefined") {
@@ -26,17 +24,13 @@ export default function Layout({ children }) {
     }
   }
 
-  
   return (
     <>
       <title>Notey</title>
       <div className="min-h-screen w-full ">
-        <Header connect={connect} isConnected={isConnected}  />
-        <div className="flex items-stretch w-full h-screen">
-
-
-
-          
+        <Header connect={connect} isConnected={isConnected} />
+        <div className="w-full h-screen ">
+        {children}
         </div>
       </div>
     </>
