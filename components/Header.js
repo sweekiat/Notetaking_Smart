@@ -1,11 +1,11 @@
 import { Button } from "flowbite-react";
 import Link from "next/link";
 import { useContext, useState } from "react";
-import Web3Modal from "web3modal";
+
 import { ethers } from "ethers";
 
-export default function Header({ connect, isConnected, execute }) {
-  const [account, setAccount] = useState(null);
+export default function Header({ connect, isConnected,}) {
+
   const [running, setRunning] = useState(false);
 
   return (
@@ -15,12 +15,11 @@ export default function Header({ connect, isConnected, execute }) {
       {isConnected ? (
         <Button
           onClick={() => {
-            execute();
             setRunning(true);
           }}
-          disabled={running}
+          disabled={running||isConnected}
         >
-          {running ? "running" : "run contract?"}
+          {running ? "running" : "Connected"}
         </Button>
       ) : (
         <Button onClick={connect} disabled={isConnected}>
