@@ -3,6 +3,7 @@ import Header from "./Header";
 import { ethers } from "ethers";
 import { useEffect, useState, cloneElement } from "react";
 import { Outlet } from "react-router-dom";
+import Sidebar from "./Sidebar";
 
 export default function Layout({ children }) {
   const [isConnected, setIsConnected] = useState(false);
@@ -27,11 +28,10 @@ export default function Layout({ children }) {
   return (
     <>
       <title>Notey</title>
-      <div className="min-h-screen w-full ">
-        <Header connect={connect} isConnected={isConnected} />
-        <div className="w-full h-screen ">
-        {children}
-        </div>
+      <Header connect={connect} isConnected={isConnected} />
+      <div className="flex flex-row">
+        <div className="w-40 border-r"><Sidebar/></div>
+        <div className="min-h-screen flex-grow mt-6 ml-6">{children}</div>
       </div>
     </>
   );
